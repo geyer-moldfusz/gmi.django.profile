@@ -1,0 +1,5 @@
+{% load static from staticfiles %}
+
+<h1>{{ profile.user.username }}</h1>
+<img src={% static profile.avatar_url %} />
+<div id="about">{{ profile.about }}</div>

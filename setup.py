@@ -3,6 +3,12 @@ import sys, os
 
 version = '0.1'
 
+requires = [
+   'Django',
+   'setuptools',
+   'gmi.django.avatar',
+]
+
 setup(name='gmi.django.profile',
       version=version,
       description="Manage crew profiles.",
@@ -18,9 +24,7 @@ XXX long description""",
       namespace_packages=['gmi', 'gmi.django'],
       include_package_data=True,
       zip_safe=False,
-      install_requires=[
-          # -*- Extra requirements: -*-
-      ],
+      install_requires=requires,
       entry_points="""
       # -*- Entry points: -*-
       """,
