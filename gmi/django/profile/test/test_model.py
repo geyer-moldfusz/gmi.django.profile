@@ -16,4 +16,4 @@ class ProfileTestCase(TestCase):
     def test_avatar_url(self):
         self.assertEqual(
             self.john.profile.avatar_url,
-            'avatar/160x160/855f96e983f1f8e8be944692b6f719fd54329826cb62e98015efee8e2e071dd4.jpg')
+            'avatar/160x160/855f96e983f1f8e8be944692b6f719fd54329826cb62e98015efee8e2e071dd4')
