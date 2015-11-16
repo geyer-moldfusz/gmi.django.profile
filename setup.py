@@ -5,6 +5,7 @@ version = '0.1'
 
 requires = [
    'Django',
+   'django-markdown',
    'setuptools',
    'gmi.django.avatar',
 ]
