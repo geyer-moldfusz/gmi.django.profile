@@ -1,7 +1,7 @@
 {% load avatar_tags %}
 
-<h1>Profiles</h1>
-
+<ul id="profiles">
 {% for profile in profile_list %}
-<p><img src={{ profile.user|avatar_url }} class="avatar" /> {{ profile.name }}</p>
+  <li><a href="{% url 'profile:profile' profile.user.username %}"><img src={{ profile.user|avatar_url }} class="avatar" />{{ profile.name }}</a></li>
 {% endfor %}
+</ul>

@@ -13,7 +13,7 @@ class ProfileTemplateTestCase(TestCase):
     def test_index(self):
         response = self.client.get(reverse('profile:index'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Profile')
+        self.assertContains(response, '<ul id="profiles">')
 
     def test_index_context(self):
         response = self.client.get(reverse('profile:index'))
@@ -30,7 +30,11 @@ class ProfileTemplateTestCase(TestCase):
 
     def test_index_profile(self):
         response = self.client.get(reverse('profile:index'))
-        self.assertContains(response, 'John</p>')
+        self.assertContains(response, 'John')
+
+    def test_index_profile_link(self):
+        response = self.client.get(reverse('profile:index'))
+        self.assertContains(response, '<a href="/profile/john/"')
 
     def test_profile_nonexistent(self):
         response = self.client.get(reverse('profile:profile', args=('foo',)))
@@ -39,9 +43,6 @@ class ProfileTemplateTestCase(TestCase):
     def test_profile(self):
         response = self.client.get(reverse('profile:profile', args=('john',)))
         self.assertEqual(response.status_code, 200)
-
-    def test_profile_context(self):
-        pass
 
     def test_profile_name(self):
         response = self.client.get(reverse('profile:profile', args=('john',)))
