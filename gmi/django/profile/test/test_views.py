@@ -5,7 +5,7 @@ from django.test import TestCase
 from gmi.django.profile.models import Profile
 
 
-class ProfileViewTestCase(TestCase):
+class ProfileTemplateTestCase(TestCase):
     def setUp(self):
         self.john = User.objects.create_user(
             'john', 'john@example.com', 'apassword', first_name='John')
@@ -17,6 +17,13 @@ class ProfileViewTestCase(TestCase):
         response = self.client.get(reverse('profile:index'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Profile')
+
+    def test_index_context(self):
+        response = self.client.get(reverse('profile:index'))
+        self.assertQuerysetEqual(
+            response.context_data['profile_list'],
+            ['<Profile: Profile object>'],
+            ordered=False)
 
     def test_index_avatar(self):
         response = self.client.get(reverse('profile:index'))
@@ -36,6 +43,8 @@ class ProfileViewTestCase(TestCase):
         response = self.client.get(reverse('profile:profile', args=('john',)))
         self.assertEqual(response.status_code, 200)
 
+    def test_profile_context(self):
+        pass
 
     def test_profile_name(self):
         response = self.client.get(reverse('profile:profile', args=('john',)))

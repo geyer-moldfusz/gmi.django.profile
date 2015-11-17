@@ -1,8 +1,8 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
 
-from . import views
+from .views import ProfileView, ProfileListView
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^(?P<username>[A-Za-z0-9]+)/$', views.profile, name='profile'),
+    url(r'^$', ProfileListView.as_view(), name='index'),
+    url(r'^(?P<slug>[-\w]+)/$', ProfileView.as_view(), name='profile'),
 ]

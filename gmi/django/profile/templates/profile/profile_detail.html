@@ -4,3 +4,8 @@
 <h1 id="name">{{ profile.name }}</h1>
 <img src={{ profile.user|avatar_url:320 }} class="avatar" />
 <div id="about">{{ profile.about|markdown_safe }}</div>
+
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Send message" />
+</form>
