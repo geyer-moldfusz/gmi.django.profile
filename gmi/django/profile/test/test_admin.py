@@ -26,12 +26,9 @@ class ProfileAdminTestCase(TestCase):
         self.pa = ProfileAdmin(Profile, self.site)
         self.paul = User.objects.create_user(
             'paul', 'paul@example.com', 'apassword', first_name='Paul')
-        self.paul.save()
         self.john = User.objects.create_user(
             'john', 'john@example.com', 'apassword', first_name='John')
-        self.john.save()
-        profile = Profile.objects.create(
-            about='about', user=self.john)
+        self.john.profile.about = 'about'
 
     def test_profile_fields(self):
         self.assertEqual(list(self.pa.get_fields(request)), ['about'])
@@ -51,8 +48,6 @@ class ProfileAdminTestCase(TestCase):
             self.pa.has_change_permission(request, self.john.profile))
 
     def test_profile_get_queryset(self):
-        request.user = self.paul
-        self.assertEqual(list(self.pa.get_queryset(request)), [])
         request.user = self.john
         self.assertEqual(
             list(self.pa.get_queryset(request)), [self.john.profile])

@@ -9,9 +9,6 @@ class ProfileTemplateTestCase(TestCase):
     def setUp(self):
         self.john = User.objects.create_user(
             'john', 'john@example.com', 'apassword', first_name='John')
-        self.john.save()
-        profile = Profile.objects.create(
-            about='about_test_Eryupht\n===', user=self.john)
 
     def test_index(self):
         response = self.client.get(reverse('profile:index'))
@@ -57,6 +54,8 @@ class ProfileTemplateTestCase(TestCase):
             '<img src=/static/avatar/320x320/default.png class="avatar" />')
 
     def test_profile_about_markdown(self):
+        self.john.profile.about='about_test_Eryupht\n==='
+        self.john.profile.save()
         response = self.client.get(reverse('profile:profile', args=('john',)))
         self.assertContains(response, '<h1>about_test_Eryupht</h1>')
 
