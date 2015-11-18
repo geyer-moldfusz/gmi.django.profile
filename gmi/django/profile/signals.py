@@ -10,4 +10,8 @@ def ensure_profile(sender, instance, **kwargs):
     try:
         instance.profile
     except Profile.DoesNotExist:
+        if not instance.is_staff:
+            return
+        if not instance.has_perm('profile.change_profile'):
+            return
         instance.profile = Profile.objects.create(about='', user=instance)

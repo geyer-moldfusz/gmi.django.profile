@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
@@ -7,8 +7,13 @@ from gmi.django.profile.models import Profile
 
 class ProfileTemplateTestCase(TestCase):
     def setUp(self):
+        change_profile_permission = Permission.objects.get(
+            codename='change_profile')
         self.john = User.objects.create_user(
             'john', 'john@example.com', 'apassword', first_name='John')
+        self.john.is_staff=True
+        self.john.user_permissions.add(change_profile_permission)
+        self.john.save()
 
     def test_index(self):
         response = self.client.get(reverse('profile:index'))

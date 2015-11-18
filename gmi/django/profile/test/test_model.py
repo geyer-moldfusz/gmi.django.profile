@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.test import TestCase
 
 from gmi.django.profile.models import Profile
@@ -6,8 +6,13 @@ from gmi.django.profile.models import Profile
 
 class ProfileTestCase(TestCase):
     def setUp(self):
+        change_profile_permission = Permission.objects.get(
+            codename='change_profile')
         self.john = User.objects.create_user(
             'john', 'john@example.com', 'apassword')
+        self.john.is_staff=True
+        self.john.user_permissions.add(change_profile_permission)
+        self.john.save()
         self.john.profile.about = 'foobar'
 
     def test_profile_extends_user(self):
