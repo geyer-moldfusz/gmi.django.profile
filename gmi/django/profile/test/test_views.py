@@ -26,6 +26,7 @@ class ProfileTemplateTestCase(TestCase):
         self.john = test.create_user(email='test@example.com')
         self.john.first_name = 'John'
         self.john.save()
+        paul = test.create_user(username='paul')
 
     def test_index(self):
         response = self.client.get(reverse('profile:index'))
@@ -36,7 +37,7 @@ class ProfileTemplateTestCase(TestCase):
         response = self.client.get(reverse('profile:index'))
         self.assertQuerysetEqual(
             response.context_data['profile_list'],
-            ['<Profile: Profile object>'],
+            ['<Profile: Profile object>', '<Profile: Profile object>'],
             ordered=False)
 
     def test_index_avatar(self):
@@ -89,6 +90,14 @@ class ProfileTemplateTestCase(TestCase):
         response = self.client.get(reverse('profile:profile', args=('john',)))
         self.assertContains(response, '[HTML_REMOVED]')
 
+    def test_profile_contact(self):
+        response = self.client.get(reverse('profile:profile', args=('john',)))
+        self.assertContains(response, '<a href="/profile/john/contact/"')
+
+    def test_profile_contact_no_email(self):
+        response = self.client.get(reverse('profile:profile', args=('paul',)))
+        self.assertNotContains(response, '<a href="/profile/paul/contact/"')
+
     def test_contact(self):
         response = self.client.get(
             reverse('profile:contact_form', args=('john',)))
@@ -96,6 +105,11 @@ class ProfileTemplateTestCase(TestCase):
         self.assertContains(response, '<label for="id_email">')
         self.assertContains(response, '<label for="id_body">')
         self.assertContains(response, '<input type="submit"')
+
+    def test_contact_no_email(self):
+        response = self.client.get(
+            reverse('profile:contact_form', args=('paul',)))
+        self.assertEqual(response.status_code, 404)
 
     def test_contact_post(self):
         response = self.client.post(

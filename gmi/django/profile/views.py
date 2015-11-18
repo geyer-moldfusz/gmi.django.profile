@@ -1,6 +1,7 @@
 from contact_form.views import ContactFormView
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.http import Http404
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.list import ListView
 
@@ -9,10 +10,6 @@ from .models import Profile
 
 class ProfileListView(ListView):
     model = Profile
-
-    def get_context_data(self, **kwargs):
-        context = super(ProfileListView, self).get_context_data(**kwargs)
-        return context
 
 
 class ProfileView(DetailView):
@@ -31,12 +28,12 @@ class ProfileContactFormView(SingleObjectMixin, ContactFormView):
     slug_field = 'username'
 
     def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
+        self._prepare_request()
         return super(ProfileContactFormView, self).get(
             request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
+        self._prepare_request()
         return super(ProfileContactFormView, self).post(
             request, *args, **kwargs)
 
@@ -46,6 +43,10 @@ class ProfileContactFormView(SingleObjectMixin, ContactFormView):
         return kwargs
 
     def get_success_url(self):
-        context = self.get_context_data()
         return reverse(
-            'profile:contact_form_sent', args=(context['user'].username,))
+            'profile:contact_form_sent', args=(self.object.username,))
+
+    def _prepare_request(self):
+        self.object = self.get_object()
+        if not self.object.email:
+            raise Http404("No contact options")
