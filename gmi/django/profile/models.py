@@ -5,7 +5,7 @@ from django.db import models
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
-    about = MarkdownField()
+    about = MarkdownField(blank=True)
 
     @property
     def name(self):
