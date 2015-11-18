@@ -1,13 +1,29 @@
+from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from gmi.django.profile.models import Profile
+from gmi.django.profile.views import ProfileContactFormView
 import gmi.django.profile.test as test
+
+
+#class ProfileContactFormViewTestCase(TestCase):
+#
+#    def setUp(self):
+#        self.john = test.create_user()
+#        self.contact_form_view = ProfileContactFormView()
+#        self.contact_form_view.kwargs = dict(slug='john')
+#
+#    def test_get(self):
+#        self.contact_form_view.get(test.GetRequest)
+#
+#    def test_get_success_url(self):
+#        self.assertEqual(self.contact_form_view.get_success_url(), '')
 
 
 class ProfileTemplateTestCase(TestCase):
     def setUp(self):
-        self.john = test.create_user()
+        self.john = test.create_user(email='test@example.com')
         self.john.first_name = 'John'
         self.john.save()
 
@@ -72,3 +88,19 @@ class ProfileTemplateTestCase(TestCase):
         self.john.profile.save()
         response = self.client.get(reverse('profile:profile', args=('john',)))
         self.assertContains(response, '[HTML_REMOVED]')
+
+    def test_contact(self):
+        response = self.client.get(
+            reverse('profile:contact_form', args=('john',)))
+        self.assertContains(response, '<label for="id_name">')
+        self.assertContains(response, '<label for="id_email">')
+        self.assertContains(response, '<label for="id_body">')
+        self.assertContains(response, '<input type="submit"')
+
+    def test_contact_post(self):
+        response = self.client.post(
+            reverse('profile:contact_form', args=('john',)),
+            dict(name='me', email='me@example.com', body='lorem ipsum'))
+        self.assertRedirects(response, '/profile/john/contact/sent')
+        self.assertEqual(mail.outbox[0].recipients(), ['test@example.com'])
+        self.assertEqual(mail.outbox[0].subject, 'Contact form message')
