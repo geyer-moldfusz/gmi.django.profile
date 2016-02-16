@@ -2,3 +2,10 @@
 *.pyc
 __pycache__
 _build
+.eggs/
+.tox/
+bin/
+include/
+lib/
+lib64
+pip-selfcheck.json

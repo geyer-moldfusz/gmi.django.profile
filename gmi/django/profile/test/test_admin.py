@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from gmi.django.profile.admin import ProfileAdmin
 from gmi.django.profile.models import Profile
-import gmi.django.profile.test as test
+from gmi.django.profile.test import utils
 
 
 class MockRequest(object):
@@ -23,8 +23,8 @@ class ProfileAdminTestCase(TestCase):
 
     def setUp(self):
         self.pa = ProfileAdmin(Profile, AdminSite())
-        self.paul = test.create_user('paul')
-        self.john = test.create_user()
+        self.paul = utils.create_user('paul')
+        self.john = utils.create_user()
 
     def test_profile_fields(self):
         self.assertEqual(list(self.pa.get_fields(request)), ['about'])

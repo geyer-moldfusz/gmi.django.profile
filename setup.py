@@ -27,6 +27,9 @@ XXX long description""",
       include_package_data=True,
       zip_safe=False,
       install_requires=requires,
+      dependency_links=['http://github.com/geyer-moldfusz/gmi.django.avatar/tarball/master#egg=gmi.django.avatar-0.1'],
+      tests_require=['django-nose', 'mock'],
+      test_suite='gmi.django.profile.test.runner.runtests',
       entry_points="""
       # -*- Entry points: -*-
       """,

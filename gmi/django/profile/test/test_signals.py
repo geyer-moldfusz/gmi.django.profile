@@ -1,17 +1,17 @@
 from django.test import TestCase
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
-from unittest.mock import Mock
+from mock import Mock
 
 from gmi.django.profile.models import Profile
+from gmi.django.profile.test import utils
 import gmi.django.profile.signals as signals
-import gmi.django.profile.test as test
 
 
 class ProfileSignalTestCase(TestCase):
 
     def setUp(self):
-        self.john = test.create_user()
+        self.john = utils.create_user()
 
     def test_ensure_profile(self):
         self.assertEqual(self.john.profile.about, '')
@@ -48,5 +48,5 @@ class ProfileSignalTestCase(TestCase):
            post_save.send(sender=george.__class__, instance=george)
 
     def test_ensure_profile_saves_profile(self):
-        paul = test.create_user(username='paul')
+        paul = utils.create_user(username='paul')
         self.assertIsNotNone(paul.profile.pk)

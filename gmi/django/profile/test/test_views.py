@@ -4,7 +4,7 @@ from django.test import TestCase
 
 from gmi.django.profile.models import Profile
 from gmi.django.profile.views import ProfileContactFormView
-import gmi.django.profile.test as test
+from gmi.django.profile.test import utils
 
 
 #class ProfileContactFormViewTestCase(TestCase):
@@ -23,10 +23,10 @@ import gmi.django.profile.test as test
 
 class ProfileTemplateTestCase(TestCase):
     def setUp(self):
-        self.john = test.create_user(email='test@example.com')
+        self.john = utils.create_user(email='test@example.com')
         self.john.first_name = 'John'
         self.john.save()
-        paul = test.create_user(username='paul')
+        paul = utils.create_user(username='paul')
 
     def test_index(self):
         response = self.client.get(reverse('profile:index'))

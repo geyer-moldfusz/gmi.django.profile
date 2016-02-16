@@ -1,12 +1,12 @@
 from django.test import TestCase
 
 from gmi.django.profile.models import Profile
-import gmi.django.profile.test as test
+from gmi.django.profile.test import utils
 
 
 class ProfileTestCase(TestCase):
     def setUp(self):
-        self.john = test.create_user()
+        self.john = utils.create_user()
         self.john.profile.about = 'foobar'
 
     def test_profile_extends_user(self):
