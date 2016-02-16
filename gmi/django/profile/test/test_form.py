@@ -14,4 +14,3 @@ class ProfileFormTestCase(TestCase):
     def test_about_empty(self):
         form = self.ProfileForm(dict(about=None))
         self.assertTrue(form.is_valid())
-

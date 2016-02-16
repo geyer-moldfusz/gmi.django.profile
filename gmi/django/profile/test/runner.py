@@ -16,4 +16,3 @@ def runtests(*test_labels):
 
 if __name__ == '__main__':
     runtests(*sys.argv[1:])
-

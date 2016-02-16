@@ -7,20 +7,6 @@ from gmi.django.profile.views import ProfileContactFormView
 from gmi.django.profile.test import utils
 
 
-#class ProfileContactFormViewTestCase(TestCase):
-#
-#    def setUp(self):
-#        self.john = test.create_user()
-#        self.contact_form_view = ProfileContactFormView()
-#        self.contact_form_view.kwargs = dict(slug='john')
-#
-#    def test_get(self):
-#        self.contact_form_view.get(test.GetRequest)
-#
-#    def test_get_success_url(self):
-#        self.assertEqual(self.contact_form_view.get_success_url(), '')
-
-
 class ProfileTemplateTestCase(TestCase):
     def setUp(self):
         self.john = utils.create_user(email='test@example.com')
@@ -73,7 +59,7 @@ class ProfileTemplateTestCase(TestCase):
             '<img src=/static/avatar/320x320/default.png class="avatar" />')
 
     def test_profile_about_markdown(self):
-        self.john.profile.about='about_test_Eryupht\n==='
+        self.john.profile.about = 'about_test_Eryupht\n==='
         self.john.profile.save()
         response = self.client.get(reverse('profile:profile', args=('john',)))
         self.assertContains(response, '<h1>about_test_Eryupht</h1>')

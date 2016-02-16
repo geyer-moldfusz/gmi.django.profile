@@ -34,7 +34,7 @@ class ProfileSignalTestCase(TestCase):
             george.profile
 
     def test_ensure_profile_preserve_existent(self):
-        self.john.profile.about='kogeyHuvyai'
+        self.john.profile.about = 'kogeyHuvyai'
         signals.ensure_profile(sender=self.john.__class__, instance=self.john)
         self.assertEqual(self.john.profile.about, 'kogeyHuvyai')
 
@@ -43,9 +43,9 @@ class ProfileSignalTestCase(TestCase):
         george.has_perm = Mock()
         george.has_perm.return_value = True
         with self.assertRaises(ValueError):
-            # post_save must raise, since John was not saved, so save() on 
+            # post_save must raise, since John was not saved, so save() on
             # related Profile is prohibited to prevent data loss.
-           post_save.send(sender=george.__class__, instance=george)
+            post_save.send(sender=george.__class__, instance=george)
 
     def test_ensure_profile_saves_profile(self):
         paul = utils.create_user(username='paul')
